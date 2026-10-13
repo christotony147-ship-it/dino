@@ -3,73 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber T-Rex Runner</title>
+  <title>Snack Frenzy vs The Hungry Horse!</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="stars-bg"></div>
-  <div class="game-wrapper">
-    <!-- Header -->
-    <header class="game-header">
-      <div class="logo">
-        <span class="dino-icon">🦖</span>
-        <h1>DINO ESCAPE</h1>
-      </div>
-      <div class="scores-panel">
-        <div class="score-card">
-          <span class="label">HI SCORE</span>
-          <span id="high-score" class="score-num">00000</span>
+  <!-- Ambient background elements -->
+  <div class="bg-decorations">
+    <div class="cloud cloud-1">☁️</div>
+    <div class="cloud cloud-2">☁️</div>
+    <div class="sun">☀️</div>
+    <div class="hay-bale hay-1">🌾</div>
+    <div class="hay-bale hay-2">🌾</div>
+  </div>
+
+  <div class="game-container">
+    <!-- Header / Stats Bar -->
+    <header class="hud-bar">
+      <div class="stat-pill timer-pill" id="timerContainer">
+        <span class="stat-icon">⏱️</span>
+        <div class="stat-details">
+          <span class="stat-label">TIME LEFT</span>
+          <span class="stat-value" id="timerVal">10.0s</span>
         </div>
-        <div class="score-card current">
-          <span class="label">SCORE</span>
-          <span id="current-score" class="score-num">00000</span>
+        <div class="timer-bar-wrapper">
+          <div class="timer-bar-fill" id="timerFill"></div>
+        </div>
+      </div>
+
+      <div class="game-title-badge">
+        <span class="fire-badge">🔥 FRENZY!</span>
+        <h1>SNACK RUSH</h1>
+      </div>
+
+      <div class="stat-pill snacks-pill">
+        <span class="stat-icon">🍪</span>
+        <div class="stat-details">
+          <span class="stat-label">SNACKS LEFT</span>
+          <span class="stat-value" id="snacksLeftVal">30</span>
+        </div>
+      </div>
+
+      <div class="stat-pill score-pill">
+        <span class="stat-icon">⭐</span>
+        <div class="stat-details">
+          <span class="stat-label">CLICKS / SEC</span>
+          <span class="stat-value" id="cpsVal">0.0</span>
         </div>
       </div>
     </header>
 
-    <!-- Canvas Area -->
-    <div class="canvas-container">
-      <canvas id="game-canvas" width="800" height="300"></canvas>
-      
-      <!-- Start / Game Over Overlay -->
-      <div id="game-overlay" class="overlay">
-        <div class="overlay-card">
-          <div id="status-badge" class="badge">READY TO RUN</div>
-          <h2 id="overlay-title">CHROME DINO RUN</h2>
-          <p id="overlay-desc">Jump over cacti and duck under pterodactyls to survive.</p>
-          <div class="controls-hint">
-            <span class="key-badge">SPACE</span> or <span class="key-badge">▲</span> to Jump &bull; 
-            <span class="key-badge">▼</span> to Duck
+    <!-- Main Game Area -->
+    <main class="arena">
+      <!-- The Hungry Horse Zone -->
+      <section class="horse-section" id="horseSection" aria-label="Hungry Horse Zone">
+        <div class="horse-card">
+          <div class="horse-speech-bubble" id="horseSpeech">
+            "NEIGH! Those snacks are MINE in 10s! 🐴"
           </div>
-          <button id="start-btn" class="glow-button">PRESS SPACE TO START</button>
+          <div class="horse-avatar-wrap" id="horseWrap">
+            <div class="horse-avatar" id="horseEmoji">🐴</div>
+            <div class="horse-shadow"></div>
+          </div>
+          <div class="horse-danger-meter">
+            <div class="horse-meter-label">
+              <span>HORSE CHARGE</span>
+              <span id="horsePercent">0%</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill" id="horseMeterFill"></div>
+            </div>
+          </div>
+          <div class="audio-control-wrap">
+            <button class="sound-toggle-btn" id="soundToggleBtn" title="Toggle Sound FX">
+              🔊 Sound: ON
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Plate Zone -->
+      <section class="plate-section" aria-label="Snack Plate Area">
+        <div class="plate-pedestal">
+          <div class="plate-outer" id="plateOuter">
+            <div class="plate-rim">
+              <div class="plate-inner" id="plateInner">
+                <!-- Snacks will be populated dynamically -->
+                <div class="snacks-grid" id="snacksContainer"></div>
+              </div>
+            </div>
+            <div class="plate-gloss"></div>
+          </div>
+          <div class="plate-base-shadow"></div>
+        </div>
+
+        <div class="tap-hint" id="tapHint">
+          <span class="tap-pulse-icon">👆</span>
+          <span>CLICK / TAP SNACKS FURIOUSLY!</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Audio / Visual effects floating container -->
+    <div id="fxLayer" class="fx-layer"></div>
+
+    <!-- Start / How-to-Play Modal Overlay -->
+    <div class="modal-overlay active" id="startModal">
+      <div class="modal-card">
+        <div class="modal-mascot">🐴 ⚔️ 🍪</div>
+        <h2 class="modal-title">THE HUNGRY HORSE IS COMING!</h2>
+        <p class="modal-description">
+          A ravenous stallion wants your entire snack platter! 
+          You have exactly <strong class="highlight-text">10 SECONDS</strong> to click frantically and gobble up all 
+          <strong class="highlight-text">30 delicious treats</strong> before the horse devours everything!
+        </p>
+
+        <div class="modal-features-grid">
+          <div class="feature-item">
+            <span class="feat-icon">⚡</span>
+            <span>Click snacks or smash the plate rapidly</span>
+          </div>
+          <div class="feature-item">
+            <span class="feat-icon">⏳</span>
+            <span>Beat the 10.0s deadline</span>
+          </div>
+          <div class="feature-item">
+            <span class="feat-icon">💥</span>
+            <span>Combo streaks for bonus speed</span>
+          </div>
+        </div>
+
+        <div class="difficulty-picker">
+          <label>CHOOSE SNACK COUNT:</label>
+          <div class="diff-btn-group">
+            <button class="diff-btn" data-count="20">Casual (20)</button>
+            <button class="diff-btn active" data-count="30">Frenzy (30)</button>
+            <button class="diff-btn" data-count="45">Insane (45)</button>
+          </div>
+        </div>
+
+        <button class="btn-primary start-btn" id="startBtn">
+          <span>START EATING! 😋</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Game Over / Victory Modal -->
+    <div class="modal-overlay" id="endModal">
+      <div class="modal-card result-card" id="endModalCard">
+        <div class="modal-mascot" id="resultEmoji">🏆</div>
+        <h2 class="modal-title" id="resultTitle">VICTORY!</h2>
+        <p class="modal-description" id="resultDesc">You gobbled up every single crumb!</p>
+
+        <div class="results-stats-panel">
+          <div class="res-stat-box">
+            <span class="res-label">TIME TAKEN</span>
+            <span class="res-val" id="resTime">7.2s</span>
+          </div>
+          <div class="res-stat-box">
+            <span class="res-label">SNACKS EATEN</span>
+            <span class="res-val" id="resEaten">30/30</span>
+          </div>
+          <div class="res-stat-box">
+            <span class="res-label">MAX CPS</span>
+            <span class="res-val" id="resMaxCps">8.5</span>
+          </div>
+          <div class="res-stat-box">
+            <span class="res-label">BEST RECORD</span>
+            <span class="res-val" id="resHighscore">--</span>
+          </div>
+        </div>
+
+        <div class="action-buttons-row">
+          <button class="btn-primary" id="restartBtn">
+            <span>PLAY AGAIN 🔄</span>
+          </button>
         </div>
       </div>
-
-      <!-- Quick sound / pause buttons -->
-      <div class="hud-bar">
-        <button id="mute-btn" class="hud-icon" title="Toggle Sound">🔊</button>
-        <button id="theme-btn" class="hud-icon" title="Toggle Theme">🌙</button>
-      </div>
     </div>
-
-    <!-- Mobile Touch Controls -->
-    <div class="touch-controls">
-      <button id="touch-duck" class="touch-btn">⬇️ DUCK</button>
-      <button id="touch-jump" class="touch-btn jump-btn">⬆️ JUMP</button>
-    </div>
-
-    <!-- Instructions / Stats footer -->
-    <footer class="game-footer">
-      <div class="feature-tag">✨ Retro 8-bit Sound FX</div>
-      <div class="feature-tag">⚡ Adaptive Speed Scaling</div>
-      <div class="feature-tag">🌅 Dynamic Day/Night Cycle</div>
-      <div class="feature-tag">📱 Full Mobile Support</div>
-    </footer>
   </div>
 
-  <script src="game.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
