@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber T-Rex Runner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars-bg"></div>
+  <div class="game-wrapper">
+    <!-- Header -->
+    <header class="game-header">
+      <div class="logo">
+        <span class="dino-icon">🦖</span>
+        <h1>DINO ESCAPE</h1>
+      </div>
+      <div class="scores-panel">
+        <div class="score-card">
+          <span class="label">HI SCORE</span>
+          <span id="high-score" class="score-num">00000</span>
+        </div>
+        <div class="score-card current">
+          <span class="label">SCORE</span>
+          <span id="current-score" class="score-num">00000</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Canvas Area -->
+    <div class="canvas-container">
+      <canvas id="game-canvas" width="800" height="300"></canvas>
+      
+      <!-- Start / Game Over Overlay -->
+      <div id="game-overlay" class="overlay">
+        <div class="overlay-card">
+          <div id="status-badge" class="badge">READY TO RUN</div>
+          <h2 id="overlay-title">CHROME DINO RUN</h2>
+          <p id="overlay-desc">Jump over cacti and duck under pterodactyls to survive.</p>
+          <div class="controls-hint">
+            <span class="key-badge">SPACE</span> or <span class="key-badge">▲</span> to Jump &bull; 
+            <span class="key-badge">▼</span> to Duck
+          </div>
+          <button id="start-btn" class="glow-button">PRESS SPACE TO START</button>
+        </div>
+      </div>
+
+      <!-- Quick sound / pause buttons -->
+      <div class="hud-bar">
+        <button id="mute-btn" class="hud-icon" title="Toggle Sound">🔊</button>
+        <button id="theme-btn" class="hud-icon" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+
+    <!-- Mobile Touch Controls -->
+    <div class="touch-controls">
+      <button id="touch-duck" class="touch-btn">⬇️ DUCK</button>
+      <button id="touch-jump" class="touch-btn jump-btn">⬆️ JUMP</button>
+    </div>
+
+    <!-- Instructions / Stats footer -->
+    <footer class="game-footer">
+      <div class="feature-tag">✨ Retro 8-bit Sound FX</div>
+      <div class="feature-tag">⚡ Adaptive Speed Scaling</div>
+      <div class="feature-tag">🌅 Dynamic Day/Night Cycle</div>
+      <div class="feature-tag">📱 Full Mobile Support</div>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
